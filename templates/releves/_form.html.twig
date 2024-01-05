@@ -1,0 +1,35 @@
+{{ form_start(form) }}
+
+{{ form_row(form.date) }}
+
+{{ form_row(form.lieu) }}
+
+
+{{ form_row(form.rbrut, {
+    'attr': {
+        'pattern': '^[1-9]{9}$',
+        'title': 'Le format doit être composé de 9 chiffres entre 1 et 9 sans separateur.'
+    }
+}) }}
+
+
+<button class="btn btn-success">{{ button_label|default('Save') }}</button>
+
+{{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var rbrutInput = document.getElementById('releves_rbrut');
+
+        rbrutInput.addEventListener('input', function () {
+            var pattern = /^[1-9]{9}$/;
+            var isValid = pattern.test(this.value);
+
+            if (!isValid) {
+                this.setCustomValidity('Le format doit être composé de 9 chiffres entre 1 et 9.');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lieu index{% endblock %}
+
+{% block body %}
+    <h1>Lieu </h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lieu in lieus %}
+            <tr>
+                <td>{{ lieu.id }}</td>
+                <td>{{ lieu.nom }}</td>
+                <td>
+                    <a href="{{ path('app_lieu_show', {'id': lieu.id}) }}" class="btn btn-info">Voir</a>
+                    <a href="{{ path('app_lieu_edit', {'id': lieu.id}) }}" class="btn btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_lieu_new') }}" class="btn btn-success">Ajouter</a>
+
+
+    <style>
+
+        .table th {
+            background-color: rgb(138, 122, 127);
+            color: #000000;
+            font-weight: bold;
+
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            text-align: center;
+            text-decoration: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-info {
+            background-color: #5bc0de;
+        }
+
+        .btn-warning {
+            background-color: #f0ad4e;
+        }
+
+        .btn-success {
+            background-color: #5cb85c;
+        }
+
+    </style>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Herbiers{% endblock %}
+
+{% block body %}
+    <style>
+
+        .title {
+            color: #333;
+        }
+
+        .table th {
+            background-color: rgba(234, 205, 192, 0.73);
+            color: #000000;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px 0;
+            text-align: center;
+            text-decoration: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-info {
+            background-color: #5bc0de;
+        }
+
+        .btn-warning {
+            background-color: #f0ad4e;
+        }
+
+        .btn-success {
+            background-color: #5cb85c;
+        }
+
+        .no-records {
+            color: #888;
+        }
+
+        .tableau-cell {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ddd;
+        }
+
+        .tableau-row {
+            display: flex;
+        }
+
+        /* Styles spécifiques à la visualisation du tableau */
+        .visualisation-table {
+            border-collapse: collapse;
+        }
+
+        .visualisation-table td {
+            padding: 0;
+            margin: 0;
+        }
+
+        .visualisation-table .vert {
+            background-color: green;
+            width: 15px;
+            height: 15px;
+        }
+
+        .visualisation-table .blanc {
+            background-color: white;
+            width: 15px;
+            height: 15px;
+        }
+
+    </style>
+
+    <div class="container">
+    <h1 class="title">Relevés</h1>
+
+    <table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Date</th>
+        <th>Lieu</th>
+        <th>Relevé brut</th>
+        <th>Tableau</th>
+        <th>Visualisation</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for releve in releves %}
+        <tr>
+        <td>{{ releve.id }}</td>
+        <td>{{ releve.date ? releve.date|date('d-m-Y') : '' }}</td>
+        <td>{{ releve.lieu.nom }}</td>
+        <td>
+            {% for caractere in releve.rbrut|split('') %}
+                {{ caractere }}
+                {% if loop.index % 1 == 0 and not loop.last %}
+                    /
+                {% endif %}
+            {% endfor %}
+        </td>
+
+        <td>
+            <div>
+            {% set releveNettoye = releve.rbrut %}
+             {% for caractere in releveNettoye|split('') %}
+                {% if loop.index0 % 3 == 0 %}</div>
+                <div class="tableau-row">
+                {% endif %}
+                <div class="tableau-cell">{{ caractere }}</div>
+                {% if loop.index % 3 == 0 %}
+                </div><div class="tableau-row">
+                {% endif %}
+             {% endfor %}
+              </div>
+        </td>
+
+            <td>
+                {% include 'releves/generate_table.html.twig' with {'releve': releve, 'tableaux': tableaux} %}
+
+            </td>
+
+        <td>
+            <a href="{{ path('app_releves_show', {'id': releve.id}) }}" class="btn btn-info">Afficher</a>
+            <a href="{{ path('app_releves_edit', {'id': releve.id}) }}" class="btn btn-warning">Modifier</a>
+        </td>
+
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7" class="no-records">Aucun enregistrement trouvé</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    <a href="{{ path('app_releves_new') }}" class="btn btn-success">Ajouter</a>
+    </div>
+{% endblock %}

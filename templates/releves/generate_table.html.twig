@@ -1,0 +1,29 @@
+{# templates/releves/generate_table.html.twig #}
+
+{% block body %}
+    <table class="visualisation-table">
+        {% set petitsTableaux = tableaux[releve.id] %}
+        {% for ligne in petitsTableaux %}
+            <tr>
+                {% for tableau in ligne %}
+                    <td>
+                        <table>
+                            {% for sousLigne in tableau %}
+                                <tr>
+                                    {% for couleur in sousLigne %}
+                                        <td class="{{ couleur }}"></td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7" class="no-records">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
